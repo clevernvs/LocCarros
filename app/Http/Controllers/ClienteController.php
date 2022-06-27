@@ -2,85 +2,124 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreClienteRequest;
-use App\Http\Requests\UpdateClienteRequest;
 use App\Models\Cliente;
+use Illuminate\Http\Request;
+use App\Repositories\ClienteRepository;
 
 class ClienteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
+    public function __construct(Cliente $cliente)
+    {
+        $this->cliente = $cliente;
+    }
+
+     /**
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $clienteRepository = new ClienteRepository($this->cliente);
+
+        // if ($request->has('atributos_modelo')) {
+        //     $atributos_modelo = 'modelo:id, '.$request->atributos_modelo;
+        //     $clienteRepository->selectAtributosRegistrosRelacionados($atributos_modelo);
+        // } else {
+        //     $clienteRepository->selectAtributosRegistrosRelacionados('modelo');
+        // }
+
+        if ($request->has('filtro')) {
+            $clienteRepository->filtro($request->filtro);
+        }
+
+        if ($request->has('atributos')) {
+            $clienteRepository->selectAtributos($request->atributos);
+        }
+
+        return response()->json($clienteRepository->getResultado(), 200);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
+    * @param  \Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\Response
+    */
+   public function store(Request $request)
+   {
+       $request->validate($this->cliente->rules());
+
+       // $cliente = $this->cliente->create($request->all());
+       $cliente = $this->cliente->create([
+           'nome' => $request->nome,
+       ]);
+
+       return response()->json($cliente, 201);
+    }
+
+
+     /**
+     * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function show($id)
     {
-        //
+        if(is_null($this->cliente->find($id))) {
+            return response()->json(['erro' => 'O cliente pesquisado não existe.'], 404) ;
+        }
+
+        $cliente = $this->cliente->find($id);
+
+        return response()->json($cliente, 200);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreClienteRequest  $request
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreClienteRequest $request)
+    public function update(Request $request, $id)
     {
-        //
+        if(is_null($this->cliente->find($id))) {
+            return response()->json(['erro' => 'Não foi possível atualizar. O cliente solicitado é inexistente.'], 404);
+        }
+
+        $cliente = $this->cliente->find($id);
+
+        if($request->method() === 'PATCH') {
+
+            $regrasDinamicas = array();
+
+            //percorrendo todas as regras definidas no Model
+            foreach($cliente->rules() as $input => $regra) {
+                //coletar apenas as regras aplicáveis aos parâmetros parciais da requisição PATCH
+                if(array_key_exists($input, $request->all())) {
+                    $regrasDinamicas[$input] = $regra;
+                }
+            }
+
+            $request->validate($regrasDinamicas);
+
+        } else {
+            $request->validate($cliente->rules());
+        }
+
+        $cliente->fill($request->all());
+        $cliente->save();
+
+        return response()->json($cliente, 200);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Cliente  $cliente
+     * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function show(Cliente $cliente)
+    public function destroy($id)
     {
-        //
-    }
+        if (is_null($this->cliente->find($id))) {
+            return response()->json(['erro' => 'Impossível excluir. Cliente inexistente.'], 404);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Cliente  $cliente
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Cliente $cliente)
-    {
-        //
-    }
+        $cliente = $this->cliente->find($id);
+        $cliente->delete();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateClienteRequest  $request
-     * @param  \App\Models\Cliente  $cliente
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateClienteRequest $request, Cliente $cliente)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Cliente  $cliente
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Cliente $cliente)
-    {
-        //
+        return response()->json(['msg' => 'O cliente foi removido com sucesso!'], 200);
     }
 }
