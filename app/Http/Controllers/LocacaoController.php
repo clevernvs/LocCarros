@@ -39,8 +39,6 @@ class LocacaoController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
      * @return \Illuminate\Http\Response
      */
     public function create()
@@ -49,7 +47,6 @@ class LocacaoController extends Controller
     }
 
     /**
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -72,10 +69,9 @@ class LocacaoController extends Controller
     }
 
      /**
-     * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         if(is_null($this->locacao->find($id))) {
             return response()->json(['erro' => 'Locação não encontrada.'], 404) ;
@@ -87,9 +83,6 @@ class LocacaoController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Locacao  $locacao
      * @return \Illuminate\Http\Response
      */
     public function edit(Locacao $locacao)
@@ -98,11 +91,9 @@ class LocacaoController extends Controller
     }
 
     /**
-     * @param  \Illuminate\Http\Request  $request
-     * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if(is_null($this->locacao->find($id))) {
             return response()->json(['erro' => 'Não foi possível atualizar. A locação solicitada é inexistente.'], 404);
@@ -136,10 +127,9 @@ class LocacaoController extends Controller
 
 
     /**
-     * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if(is_null($this->locacao->find($id))) {
             return response()->json(['erro' => 'Falha ao excluir. A locação solicitada é inexistente.'], 404);

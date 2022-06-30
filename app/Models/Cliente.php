@@ -16,4 +16,9 @@ class Cliente extends Model
             'nome' => 'required|min:3',
         ];
     }
+
+    public function feedback()
+    {
+        return [];
+    }
 }

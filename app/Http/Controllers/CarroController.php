@@ -71,7 +71,7 @@ class CarroController extends Controller
      * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         $carro = $this->carro->with('modelo')->find($id);
         if(is_null($carro)) {
@@ -97,7 +97,7 @@ class CarroController extends Controller
      * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if(is_null($this->carro->find($id))) {
             return response()->json(['erro' => 'Não foi possível atualizar. O carro solicitado é inexistente.'], 404);
@@ -138,7 +138,7 @@ class CarroController extends Controller
      * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if(is_null($this->carro->find($id))) {
             return response()->json(['erro' => 'Falha ao excluir. O carro solicitado é inexistente.'], 404);

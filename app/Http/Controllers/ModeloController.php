@@ -48,7 +48,6 @@ class ModeloController extends Controller
     }
 
     /*
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -72,10 +71,9 @@ class ModeloController extends Controller
     }
 
     /*
-     * @param  \App\Models\Modelo  $modelo
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         if (is_null($this->modelo->with('marca')->find($id))) {
             return response()->json(['erro' => 'Recurso pesquisado não existe'], 404);
@@ -87,7 +85,6 @@ class ModeloController extends Controller
     }
 
     /*
-     * @param  \App\Models\Modelo  $modelo
      * @return \Illuminate\Http\Response
      */
     public function edit(Modelo $modelo)
@@ -96,11 +93,9 @@ class ModeloController extends Controller
     }
 
     /*
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Modelo  $modelo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if (is_null($this->modelo->find($id))) {
             return response()->json(['erro' => 'Não foi possível atualizar. O modelo solicitado é inexistente.'], 404);
@@ -157,10 +152,9 @@ class ModeloController extends Controller
     }
 
     /*
-     * @param  \App\Models\Modelo  $modelo
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (is_null($this->modelo->find($id))) {
             return response()->json(['erro' => 'Falha ao excluir. O modelo solicitado é inexistente.'], 404);

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Marca;
 use App\Repositories\MarcaRepository;
-use Illuminate\Http\Request;
 
 class MarcaController extends Controller
 {
@@ -48,7 +48,6 @@ class MarcaController extends Controller
     }
 
     /**
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -91,11 +90,9 @@ class MarcaController extends Controller
     }
 
     /**
-     * @param  \Illuminate\Http\Request  $request
-     * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if(is_null($this->marca->find($id))) {
             return response()->json(['erro' => 'Não foi possível atualizar. A marca solicitada é inexistente.'], 404);
@@ -143,10 +140,9 @@ class MarcaController extends Controller
     }
 
     /**
-     * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $marca = $this->marca->find($id);
 

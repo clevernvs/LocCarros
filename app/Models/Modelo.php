@@ -23,6 +23,11 @@ class Modelo extends Model
         ];
     }
 
+    public function feedback()
+    {
+        return [];
+    }
+
     public function marca() {
         //UM modelo PERTENCE a UMA marca
         return $this->belongsTo('App\Models\Marca');

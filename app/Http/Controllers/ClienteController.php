@@ -39,7 +39,6 @@ class ClienteController extends Controller
     }
 
     /**
-    * @param  \Illuminate\Http\Request  $request
     * @return \Illuminate\Http\Response
     */
    public function store(Request $request)
@@ -56,10 +55,9 @@ class ClienteController extends Controller
 
 
      /**
-     * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         if(is_null($this->cliente->find($id))) {
             return response()->json(['erro' => 'O cliente pesquisado não existe.'], 404) ;
@@ -71,11 +69,9 @@ class ClienteController extends Controller
     }
 
     /**
-     * @param  \Illuminate\Http\Request  $request
-     * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if(is_null($this->cliente->find($id))) {
             return response()->json(['erro' => 'Não foi possível atualizar. O cliente solicitado é inexistente.'], 404);
@@ -108,10 +104,9 @@ class ClienteController extends Controller
     }
 
     /**
-     * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if (is_null($this->cliente->find($id))) {
             return response()->json(['erro' => 'Impossível excluir. Cliente inexistente.'], 404);

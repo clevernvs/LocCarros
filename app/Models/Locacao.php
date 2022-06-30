@@ -25,4 +25,9 @@ class Locacao extends Model
     {
         return [];
     }
+
+    public function feedback()
+    {
+        return [];
+    }
 }

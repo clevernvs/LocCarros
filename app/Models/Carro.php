@@ -20,6 +20,11 @@ class Carro extends Model
         ];
     }
 
+    public function feedback()
+    {
+        return [];
+    }
+
     public function modelo()
     {
         return $this->belongsTo('App\Models\Modelo');
